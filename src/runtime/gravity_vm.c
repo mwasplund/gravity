@@ -1567,7 +1567,11 @@ inline gravity_value_t gravity_vm_lookup (gravity_vm *vm, gravity_value_t key) {
     return (value) ? *value : VALUE_NOT_VALID;
 }
 
-inline gravity_closure_t *gravity_vm_fastlookup (gravity_vm *vm, gravity_class_t *c, int index) {
+
+#ifndef SOUP_BUILD
+inline
+#endif
+gravity_closure_t *gravity_vm_fastlookup (gravity_vm *vm, gravity_class_t *c, int index) {
     #pragma unused(vm)
     return (gravity_closure_t *)gravity_class_lookup_closure(c, cache[index]);
 }

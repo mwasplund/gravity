@@ -416,7 +416,10 @@ inline gravity_closure_t *gravity_class_lookup_closure (gravity_class_t *c, grav
     return NULL;
 }
 
-inline gravity_closure_t *gravity_class_lookup_constructor (gravity_class_t *c, uint32_t nparams) {
+#ifndef SOUP_BUILD
+inline
+#endif
+gravity_closure_t *gravity_class_lookup_constructor (gravity_class_t *c, uint32_t nparams) {
     if (c->xdata) {
         // bridged class so check for special $initN function
         if (nparams == 0) {
@@ -1846,13 +1849,19 @@ uint32_t gravity_value_hash (gravity_value_t value) {
     return gravity_hash_compute_buffer((const char *)value.p, sizeof(gravity_object_t*));
 }
 
-inline gravity_class_t *gravity_value_getclass (gravity_value_t v) {
+#ifndef SOUP_BUILD
+inline
+#endif
+gravity_class_t *gravity_value_getclass (gravity_value_t v) {
     if ((v.isa == gravity_class_class) && (v.p->objclass == gravity_class_object)) return (gravity_class_t *)v.p;
     if ((v.isa == gravity_class_instance) || (v.isa == gravity_class_class)) return (v.p) ? v.p->objclass : NULL;
     return v.isa;
 }
 
-inline gravity_class_t *gravity_value_getsuper (gravity_value_t v) {
+#ifndef SOUP_BUILD
+inline
+#endif
+gravity_class_t *gravity_value_getsuper (gravity_value_t v) {
     gravity_class_t *c = gravity_value_getclass(v);
     return (c && c->superclass) ? c->superclass : NULL;
 }
@@ -2381,7 +2390,11 @@ inline gravity_value_t gravity_string_to_value (gravity_vm *vm, const char *s, u
     return value;
 }
 
-inline gravity_string_t *gravity_string_new (gravity_vm *vm, char *s, uint32_t len, uint32_t alloc) {
+
+#ifndef SOUP_BUILD
+inline
+#endif
+gravity_string_t *gravity_string_new (gravity_vm *vm, char *s, uint32_t len, uint32_t alloc) {
     gravity_string_t *obj = mem_alloc(NULL, sizeof(gravity_string_t));
     if (len == AUTOLENGTH) len = (uint32_t)strlen(s);
 
@@ -2429,7 +2442,10 @@ inline gravity_value_t gravity_value_from_object(void *obj) {
     return ((gravity_value_t){.isa = (((gravity_object_t *)(obj))->isa), .p = (gravity_object_t *)(obj)});
 }
 
-inline gravity_value_t gravity_value_from_int(gravity_int_t n) {
+#ifndef SOUP_BUILD
+inline
+#endif
+gravity_value_t gravity_value_from_int(gravity_int_t n) {
     return ((gravity_value_t){.isa = gravity_class_int, .n = (n)});
 }
 
@@ -2437,7 +2453,10 @@ inline gravity_value_t gravity_value_from_float(gravity_float_t f) {
     return ((gravity_value_t){.isa = gravity_class_float, .f = (f)});
 }
 
-inline gravity_value_t gravity_value_from_null(void) {
+#ifndef SOUP_BUILD
+inline
+#endif
+gravity_value_t gravity_value_from_null(void) {
     return ((gravity_value_t){.isa = gravity_class_null, .n = 0});
 }
 
